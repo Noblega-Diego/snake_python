@@ -24,7 +24,11 @@ class Game:
             return True
         return False
 
-
+    def __draw(self):
+        self.__superficie.fill((200, 200, 200))
+        self.apple.draw()
+        self.snake.move()
+        pygame.display.flip()
 
     def run(self):
         vandera = True
@@ -54,9 +58,6 @@ class Game:
                 self.snake.add__cola()
                 self.__set_manzana_random_pos()
                 print("colision")
-            self.__superficie.fill((200, 200, 200))
-            self.apple.draw()
-            self.snake.move()
-            pygame.display.flip()
 
+            self.__draw()
             pygame.time.delay(200)
