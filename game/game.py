@@ -8,6 +8,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.__superficie = pygame.display.set_mode((500,500))
+        self.__image = pygame.image.load("resources/background.jpg").convert()
         self.snake = Serpiente(self.__superficie,1)
         self.apple = Apple(self.__superficie)
         self.snake.draw()
@@ -29,7 +30,7 @@ class Game:
         return False
 
     def __draw(self):
-        self.__superficie.fill((200, 200, 200))
+        self.__superficie.blit(self.__image,(0,0))
         self.apple.draw()
         self.snake.move()
         self.snake.draw()
