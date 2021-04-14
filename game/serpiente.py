@@ -7,10 +7,11 @@ class Cuerpo:
             Cuerpo.__block = pygame.image.load("resources/block.jpg").convert()
         self.superficie = superficie
         self.__x = pos[0]
-        self.__y = pos[0]
+        self.__y = pos[1]
 
     def draw(self):
-        self.superficie.blit(self.__block, (self.__x, self.__y))
+        if(self.__x != None and self.__y != None):
+            self.superficie.blit(self.__block, (self.__x, self.__y))
 
     def set_pos(self,pos:tuple):
         self.__x = pos[0]
@@ -23,7 +24,6 @@ class Cuerpo:
 
 class Serpiente:
     __DIMENSION = 40
-
     def __init__(self, superficie:Surface, length):
         self.__length = length
         self.__cuerpo = []
@@ -32,6 +32,8 @@ class Serpiente:
         self.__superficie = superficie
         self.direction = 'down'
         self.__block = pygame.image.load("resources/block.jpg").convert()
+        self.velocity = 10;
+        self.__move = 0
 
     def draw(self):
         for i in range(self.__length):
@@ -44,28 +46,27 @@ class Serpiente:
 
 
     def add__cola(self):
-        pos_final = self.__cuerpo[-0].get_pos()
-        print(pos_final)
-        new_cola = Cuerpo(self.__superficie, pos_final)
+        new_cola = Cuerpo(self.__superficie, (None,None))
         self.__length += 1
         self.__cuerpo.append(new_cola)
 
     def move(self):
+        if(self.__move >= self.__DIMENSION):
+            for i in range(self.__length - 1, 0, -1):
+                block = self.__cuerpo[i-1].get_pos()
+                self.__cuerpo[i].set_pos(block)
 
-        for i in range(self.__length - 1, 0, -1):
-            block = self.__cuerpo[i-1].get_pos()
-            self.__cuerpo[i].set_pos(block)
-
-        pos = self.__cuerpo[0].get_pos()
-        if(self.direction == 'up'):
-            self.__cuerpo[0].set_pos((pos[0], pos[1] - self.__DIMENSION))
-        elif(self.direction == 'down'):
-            self.__cuerpo[0].set_pos((pos[0], pos[1] + self.__DIMENSION))
-        elif(self.direction == 'left'):
-            self.__cuerpo[0].set_pos((pos[0] - self.__DIMENSION, pos[1]))
-        elif(self.direction == 'rigth'):
-            self.__cuerpo[0].set_pos((pos[0] + self.__DIMENSION, pos[1]))
-        self.draw()
+            pos = self.__cuerpo[0].get_pos()
+            if(self.direction == 'up'):
+                self.__cuerpo[0].set_pos((pos[0], pos[1] - self.__DIMENSION))
+            elif(self.direction == 'down'):
+                self.__cuerpo[0].set_pos((pos[0], pos[1] + self.__DIMENSION))
+            elif(self.direction == 'left'):
+                self.__cuerpo[0].set_pos((pos[0] - self.__DIMENSION, pos[1]))
+            elif(self.direction == 'rigth'):
+                self.__cuerpo[0].set_pos((pos[0] + self.__DIMENSION, pos[1]))
+            self.__move = 0
+        self.__move += self.velocity
 
     def get_pos(self):
         return self.__cuerpo[0].get_pos()
@@ -90,6 +91,7 @@ class Serpiente:
         pos_snake = self.__cuerpo[0].get_pos()
         for i in range(1, self.__length):
             pos_cuerpo = self.__cuerpo[i].get_pos()
-            if((pos_snake[1] +20 < pos_cuerpo[1] + 40 and pos_snake[1] +20 > pos_cuerpo[1]) and (pos_snake[0] +20 < pos_cuerpo[0] + 40 and pos_snake[0] +20 > pos_cuerpo[0])):
-                return True
+            if(pos_cuerpo[0] != None and pos_cuerpo[1] != None):
+                if((pos_snake[1] +20 < pos_cuerpo[1] + 40 and pos_snake[1] +20 > pos_cuerpo[1]) and (pos_snake[0] +20 < pos_cuerpo[0] + 40 and pos_snake[0] +20 > pos_cuerpo[0])):
+                    return True
         return False

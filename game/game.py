@@ -2,6 +2,8 @@ from .serpiente import Serpiente
 from .apple import Apple
 import pygame
 from random import Random
+from .menu import Ui
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -9,6 +11,8 @@ class Game:
         self.snake = Serpiente(self.__superficie,1)
         self.apple = Apple(self.__superficie)
         self.snake.draw()
+        self.ui = Ui(self.__superficie)
+        self.clock = pygame.time.Clock()
 
     def __set_manzana_random_pos(self):
         random = Random()
@@ -28,12 +32,15 @@ class Game:
         self.__superficie.fill((200, 200, 200))
         self.apple.draw()
         self.snake.move()
-        pygame.display.flip()
+        self.snake.draw()
+        self.ui.draw()
+        pygame.display.update()
 
     def run(self):
         vandera = True
         self.__set_manzana_random_pos()
         while vandera:
+            self.clock.tick(30)
             for event in pygame.event.get():
                 # con type verificamos que tipo de evento se lanzo podemos tener QUIT,KEYDOWN
                 if event.type == pygame.KEYDOWN:
@@ -52,12 +59,15 @@ class Game:
                     vandera = False
             if (self.snake.detect_colision()):
                 self.snake.reset()
+                self.ui.set_puntuacio(0)
                 print("colisiono con cuerpo")
+
 
             if (self.detect_colision()):
                 self.snake.add__cola()
                 self.__set_manzana_random_pos()
+                puntuacion = self.ui.get_puntuacion()
+                self.ui.set_puntuacio(puntuacion + self.apple.value)
                 print("colision")
 
             self.__draw()
-            pygame.time.delay(200)
