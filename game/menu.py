@@ -1,7 +1,6 @@
 from pygame.font import SysFont
 from pygame import Surface
 from pygame.event import Event
-import pygame
 class Ui:
 
     def __init__(self, superficie:Surface):
@@ -13,7 +12,7 @@ class Ui:
     def draw(self):
         self.__superficie.blit(self.__textpygame, (20, self.__superficie.get_height() - 30))
 
-    def set_puntuacio(self, puntuacion):
+    def set_puntuacion(self, puntuacion):
         self.__puntuacion = puntuacion
         self.__textpygame = self.font.render("Score: {}".format(self.__puntuacion), False,(0,0,0))
 

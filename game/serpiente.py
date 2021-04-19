@@ -43,6 +43,7 @@ class Serpiente:
         for i in range(0, self.__length -1):
             p = self.__cuerpo.pop()
             self.__length -= 1
+        self.__cuerpo[0].set_pos((self.__DIMENSION,self.__DIMENSION))
 
 
     def add__cola(self):

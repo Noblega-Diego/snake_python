@@ -60,7 +60,7 @@ class Game:
                     vandera = False
             if (self.snake.detect_colision()):
                 self.snake.reset()
-                self.ui.set_puntuacio(0)
+                self.ui.set_puntuacion(0)
                 print("colisiono con cuerpo")
 
 
@@ -68,7 +68,7 @@ class Game:
                 self.snake.add__cola()
                 self.__set_manzana_random_pos()
                 puntuacion = self.ui.get_puntuacion()
-                self.ui.set_puntuacio(puntuacion + self.apple.value)
+                self.ui.set_puntuacion(puntuacion + self.apple.value)
                 print("colision")
 
             self.__draw()
